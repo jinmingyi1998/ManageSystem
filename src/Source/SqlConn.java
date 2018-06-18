@@ -82,4 +82,43 @@ public class SqlConn {
         }
         return true;
     }
+
+    public static boolean checkUser(String s,String p) {
+        try {
+            Connection conn=DBCPUtils.getConnection();
+            PreparedStatement ps=conn.prepareStatement("SELECT * from users where username=? and password=password(?)");
+            ps.setString(1,s);
+            ps.setString(2,p);
+            System.out.println(ps.toString());
+            ResultSet rs=ps.executeQuery();
+            rs.last();
+            if(rs.getRow()>0){
+                rs.close();
+                ps.close();
+                conn.close();
+                return true;
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void addUser(String s,String p){
+        try {
+            Connection conn=DBCPUtils.getConnection();
+            PreparedStatement ps=conn.prepareStatement("INSERT into users (username,password)value(?,password(?)) ");
+            ps.setString(1,s);
+            ps.setString(2,p);
+            ps.execute();
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

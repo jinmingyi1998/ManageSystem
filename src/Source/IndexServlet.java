@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,10 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("request") != null) {
             switch (request.getParameter("request")) {
+                case "logout":
+                    HttpSession session=request.getSession();
+                    session.invalidate();
+                    break;
                 case "insert":
                     Person insertPerson = new Person();
                     insertPerson.setName(request.getParameter("name"));
@@ -55,6 +60,6 @@ public class IndexServlet extends HttpServlet {
         ArrayList<Person> persons = SqlConn.getPersonList();
         System.out.println(persons.size());
         request.setAttribute("persons", persons);
-        request.getRequestDispatcher("index.jsp").forward(request,response);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }

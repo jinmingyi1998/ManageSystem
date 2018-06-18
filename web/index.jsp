@@ -31,6 +31,16 @@
     </script>
 </head>
 <body>
+
+<%
+    if (session.getAttribute("username") != null && session.getAttribute("password") != null) {
+        if (SqlConn.checkUser(session.getAttribute("username").toString(), session.getAttribute("password").toString())) {
+            request.setAttribute("username",session.getAttribute("username"));
+            request.setAttribute("password",session.getAttribute("password"));
+
+%>
+<%@include file="navbar.jsp" %>
+<br><br><br><br>
 <div class="container">
     <div class="jumbotron">
         <h1 class="text-center">Manage System</h1>
@@ -133,5 +143,13 @@
         </table>
     </div>
 </div>
+<%
+        }
+    }else{
+        %>
+<%@include file="login.jsp"%>
+<%
+        }
+%>
 </body>
 </html>
